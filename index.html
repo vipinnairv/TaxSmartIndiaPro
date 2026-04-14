@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>TaxSmartIndia Pro by Vipin Nair — FY 2026-27</title>
+<title>TaxSmartIndia Pro v8 by Vipin Nair — FY 2026-27</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
@@ -424,17 +424,63 @@ const pct = (a,b) => b > 0 ? (a/b*100).toFixed(1)+'%' : '0%';
    - FloatingAI: floating chat button + panel
 ════════════════════════════════════════════════════════ */
 
-const SYSTEM_PROMPT = `You are an expert Indian Chartered Accountant and Tax Advisor for FY 2026-27. Work like a senior KPMG/PWC tax partner.
+const SYSTEM_PROMPT = `You are an expert Indian Chartered Accountant and Senior Tax Advisor for FY 2026-27 (AY 2027-28). Work like a senior partner at KPMG/EY/Deloitte India tax practice.
 
-RESPONSE FORMAT — Return ONLY a JSON object:
-{"summary":"2-3 sentence assessment with total potential tax saving","rows":[{"priority":"HIGH|MEDIUM|LOW","section":"80C/80D/NPS etc","opportunity":"Specific action","invest":"Exact Rs amount","taxSaving":"Rs tax saved","deadline":"When to act"}],"topAction":"Single most impactful step right now"}
+RESPONSE FORMAT — Return ONLY a valid JSON object (no markdown, no text outside JSON):
+{"summary":"2-3 sentence expert assessment with TOTAL potential annual tax saving in Rs","rows":[{"priority":"HIGH|MEDIUM|LOW","section":"Section reference","opportunity":"Specific actionable advice","invest":"Exact Rs amount to invest or action","taxSaving":"Rs tax saved","deadline":"Specific deadline e.g. 31 Mar 2027"}],"topAction":"Single highest-impact action right now with exact Rs amount"}
 
-FY 2026-27 KEY RULES:
-NEW REGIME: Exemption Rs 4L, 87A rebate zero tax up to Rs 12L, Std Deduction Rs 75K, Employer NPS 80CCD(2) 14% of Basic. NO other deductions.
-OLD REGIME: 80C Rs 1.5L, 80CCD(1B) NPS extra Rs 50K, 80D self Rs 25K/Rs 50K senior, 80D parents Rs 25K/Rs 50K senior, Sec 24b home loan Rs 2L, 80TTA Rs 10K/80TTB Rs 50K, 80G donations, 80E education loan no cap.
-CAPITAL GAINS: STCG equity 20%, LTCG equity 12.5% (Rs 1.25L exempt/year), Debt MF slab, FnO speculative slab.
-LTCG HARVEST: Book Rs 1.25L LTCG every April — zero tax. Best zero-cost saving.
-Return ONLY the JSON. No markdown outside JSON.`;
+━━━ INCOME TAX ACT 2025 + FINANCE ACT 2025 — FY 2026-27 RULES ━━━
+
+NEW REGIME (Sec 115BAC — DEFAULT from AY 2025-26):
+• Basic exemption: Rs 4,00,000 | 87A Rebate: zero tax up to Rs 12,00,000 (rebate = Rs 60,000 max)
+• Standard Deduction: Rs 75,000 (salaried/pensioners) u/s 16(ia)
+• Employer NPS u/s 80CCD(2): up to 14% of Basic — ONLY major deduction in New Regime
+• Marginal relief: Income Rs 12L-12.75L → tax ≤ (income − Rs 12L)
+• Max surcharge: 25% (37% slab abolished from AY 2024-25 — Finance Act 2023)
+• NO 80C, NO 80D, NO HRA, NO Home Loan Sec 24b, NO LTA, NO 80G in New Regime
+
+OLD REGIME (opt-in required by filing ITR / Form 10-IE):
+• Exemption: Rs 2.5L (General) / Rs 3L (Senior 60+) / Rs 5L (Super Senior 80+)
+• 87A: zero tax up to Rs 5L net income
+• 80C: Rs 1,50,000 (ELSS, PPF, LIC, EPF, NPS own, tuition, home loan principal, NSC, SCSS)
+• 80CCD(1B): NPS own contribution extra Rs 50,000 (over and above 80C)
+• 80CCD(2): Employer NPS 10% of Basic
+• 80D: Self/family Rs 25K (non-senior) / Rs 50K (senior); Parents Rs 25K/Rs 50K (senior parents)
+• Sec 24(b): Home loan interest Rs 2,00,000 (self-occupied); unlimited (let-out)
+• 80E: Education loan interest — no cap — 8 years
+• 80TTA: Savings interest Rs 10,000 (below 60) | 80TTB: All interest Rs 50,000 (senior 60+)
+• 80G: Donations — 50%/100% depending on charity
+• 80U: Disability Rs 75,000 (40-79%) / Rs 1,25,000 (80%+)
+• 80EEB: EV loan interest Rs 1,50,000
+• LTA: 2 journeys in 4-year block — actual fare economy class or train AC
+• HRA: Min of (HRA received, Rent paid − 10% salary, 50%/40% of salary)
+• Surcharge: up to 37% for >Rs 5 Cr (old regime retains this)
+
+CAPITAL GAINS — Finance Act 2024 (applicable FY 2025-26 onwards):
+• STCG equity/MF (≤12 months): 20% u/s 111A — surcharge capped at 15%
+• LTCG equity/MF (>12 months): 12.5% u/s 112A — Rs 1.25L/year exempt — surcharge capped 15%
+• Debt MF / Bonds: Slab rate (no LTCG benefit — removed April 2023)
+• F&O / Intraday: Slab rate as business income (non-speculative/speculative)
+• VDA / Crypto: 30% flat u/s 115BBH + 1% TDS u/s 194S — NO loss set-off or carry-forward
+• LTCG Harvest: Book Rs 1.25L LTCG every April at ZERO tax — most efficient free saving
+
+PRESUMPTIVE TAXATION (44ADA / 44AD):
+• 44ADA Professionals: Rs 75L limit (digital receipts); Rs 50L (if any cash receipts); declare 50% as income
+• 44AD Business: Rs 3 Cr (digital) / Rs 2 Cr (cash); declare 8%/6% as income
+• Advance Tax: 100% by 15-Mar (presumptive) or quarterly 15-Jun/Sep/Dec/Mar
+
+KEY TAX DEADLINES FY 2026-27:
+• Q1 Advance Tax: 15-Jun-2026 | Q2: 15-Sep-2026 | Q3: 15-Dec-2026 | Q4: 15-Mar-2027
+• ITR Filing: 31-Jul-2027 (non-audit) | 31-Oct-2027 (audit cases)
+• Updated Return (ITR-U): within 24 months — 25%/50% additional tax
+
+IMPORTANT ADVICE GUIDELINES:
+• Always compute EXACT tax saving at user's marginal slab rate (5%/20%/30%) × 1.04 (cess)
+• For each opportunity, state the Rs amount to invest AND the Rs tax saved
+• Prioritise by tax saving per rupee invested — NPS 80CCD(2) > ELSS > 80D > 80G
+• Flag VDA/crypto holdings as HIGH RISK from tax perspective (no loss relief)
+• Recommend regime switch analysis when total deductions might exceed Rs 3.75L in old regime
+Return ONLY the JSON object. No markdown fences. No text before or after JSON.`;
 
 /* ════════════════════════════════════
    MULTI-PROVIDER AI ENGINE
@@ -982,17 +1028,32 @@ const FloatingAI = ({globalCtx}) => {
 };
 
 
-/* ── TAX ENGINE FY 2026-27 ──
-   NEW REGIME (Finance Act 2025):
-   Basic exemption: Rs 4,00,000
-   87A rebate: net income up to Rs 12,00,000 = zero tax
-   Std deduction: Rs 75,000 (salaried)
-   Employer NPS 80CCD(2): 14% of Basic
-   Marginal relief: income Rs 12L-12.75L, tax capped at (income - 12L)
-   OLD REGIME: unchanged slabs, all deductions available
-*/
+/* ══════════════════════════════════════════════════════════
+   TAX ENGINE FY 2026-27 — Income Tax Act 2025 + Finance Act 2025
+   ──────────────────────────────────────────────────────────
+   NEW REGIME (default from AY 2025-26 per Sec 115BAC):
+     Basic exemption   : Rs 4,00,000
+     87A rebate        : Rs 60,000 or tax (lesser) → zero tax up to Rs 12L
+     Std Deduction     : Rs 75,000 (salaried/pensioners) u/s 16(ia)
+     Employer NPS      : 80CCD(2) up to 14% of Basic (u/s 80CCD(2))
+     Marginal relief   : Rs 12L–12.75L, tax ≤ (income – 12L)
+     Surcharge cap     : MAX 25% (37% slab abolished — Finance Act 2023)
+   OLD REGIME:
+     Basic exemption   : Rs 2.5L / Rs 3L (Sr) / Rs 5L (Super Sr)
+     87A rebate        : zero tax up to Rs 5L income
+     Surcharge         : up to 37% for >Rs 5 Cr (unchanged)
+   CAPITAL GAINS (Finance Act 2024 onward):
+     STCG equity/MF    : 20% (u/s 111A) — surcharge capped at 15%
+     LTCG equity/MF    : 12.5% (u/s 112A) — Rs 1.25L exempt/yr — surcharge capped 15%
+     Debt MF / Bonds   : Slab rate (no LTCG benefit after Apr-2023)
+     Intraday / F&O    : Slab rate (speculative / non-speculative business)
+     VDA / Crypto      : 30% flat (u/s 115BBH) + 1% TDS u/s 194S
+══════════════════════════════════════════════════════════ */
 const TAX = {
+  /* NEW REGIME — surcharge max 25% (Finance Act 2023 abolished 37%) */
   newRegime: income => {
+    if (income <= 0) return 0;
+    // 87A: zero tax if income ≤ 12L (rebate = full tax, max Rs 60,000)
     if (income <= 1200000) return 0;
     const slabs = [
       [0,400000,0],[400000,800000,.05],[800000,1200000,.10],
@@ -1003,70 +1064,175 @@ const TAX = {
       if (income <= f) break;
       tax += (Math.min(income,t) - f) * r;
     }
+    // Marginal relief: Rs 12L–12.75L — tax ≤ excess over Rs 12L
     if (income > 1200000 && income <= 1275000) tax = Math.min(tax, income - 1200000);
-    const sur = income>50000000?tax*.37:income>20000000?tax*.25:income>10000000?tax*.15:income>5000000?tax*.10:0;
-    return Math.round((tax + sur) * 1.04);
+    // Surcharge — NEW REGIME cap = 25% (no 37% slab)
+    const sur = income>20000000?tax*.25:income>10000000?tax*.15:income>5000000?tax*.10:0;
+    return Math.round((tax + sur) * 1.04); // 4% Education Cess
   },
+
+  /* OLD REGIME — 37% surcharge retained for >5 Cr */
   oldRegime: (income, isSenior, isSuperSenior) => {
+    if (income <= 0) return 0;
     const basic = isSuperSenior ? 500000 : isSenior ? 300000 : 250000;
+    // 87A rebate: zero tax if income ≤ Rs 5L (old regime)
     if (income <= 500000) return 0;
     let tax = 0;
     if (income > basic) tax += (Math.min(income,500000) - basic) * .05;
     if (income > 500000) tax += (Math.min(income,1000000) - 500000) * .20;
     if (income > 1000000) tax += (income - 1000000) * .30;
+    // Old regime surcharge — 37% slab retained
     const sur = income>50000000?tax*.37:income>20000000?tax*.25:income>10000000?tax*.15:income>5000000?tax*.10:0;
-    return Math.round((tax + sur) * 1.04);
+    return Math.round((tax + sur) * 1.04); // 4% Education Cess
   },
+
+  /* HRA Exemption — Rule 2A (metro cities only Delhi/Mumbai/Chennai/Kolkata = 50%) */
   hra: (basic, da, hraRec, rent, metro) => {
     if (!rent || rent <= 0) return 0;
     const sal = basic + da;
     return Math.max(0, Math.min(hraRec, rent - sal*.10, sal*(metro?.50:.40)));
   },
+
+  /* Capital Gains Classifier — Finance Act 2024 rates */
   cgains: (buyDate, sellDate, cost, proceeds, type) => {
     if (!buyDate || !sellDate) return null;
     const days = Math.round((new Date(sellDate) - new Date(buyDate)) / 86400000);
     const gain = n(proceeds) - n(cost);
-    let cls, rate;
-    if (type === 'Intraday' || type === 'F&O') { cls = 'Speculative'; rate = 0; }
-    else if (type === 'Debt MF' || type === 'Bonds') { cls = 'Debt'; rate = .30; }
-    else { const lt = days > 365; cls = lt ? 'LTCG' : 'STCG'; rate = lt ? .125 : .20; }
-    return {days, gain, cls, rate};
+    let cls, rate, note = '';
+    if (type === 'Intraday' || type === 'F&O') {
+      cls = 'Speculative'; rate = 0; // taxed at slab in normal income
+      note = 'Taxed at slab rate as speculative/non-speculative business income';
+    } else if (type === 'Debt MF' || type === 'Bonds') {
+      cls = 'Debt/Bonds'; rate = 0; // taxed at slab (no LTCG benefit post Apr-2023)
+      note = 'Taxed at slab rate — no LTCG/indexation benefit post 1-Apr-2023';
+    } else if (type === 'VDA / Crypto') {
+      cls = 'VDA'; rate = .30; // 30% flat u/s 115BBH, no set-off allowed
+      note = '30% flat tax u/s 115BBH + 1% TDS u/s 194S. No loss set-off/carry-forward.';
+    } else {
+      // Equity / Equity MF / Listed Shares
+      const lt = days > 365; // LTCG if held > 1 year
+      cls = lt ? 'LTCG' : 'STCG';
+      rate = lt ? .125 : .20; // LTCG 12.5% u/s 112A; STCG 20% u/s 111A
+      note = lt
+        ? 'LTCG 12.5% u/s 112A — Rs 1.25L exempt/yr. Surcharge capped at 15%.'
+        : 'STCG 20% u/s 111A — surcharge capped at 15% (Finance Act 2024).';
+    }
+    return {days, gain, cls, rate, note};
+  },
+
+  /* CG Tax with correct surcharge (capped at 15% for STCG/LTCG equity) */
+  cgTaxCalc: (stcg, ltcg, vda, normalIncome) => {
+    const ltcgExempt = Math.min(Math.max(0, ltcg), 125000); // Rs 1.25L LTCG exemption
+    const taxableLTCG = Math.max(0, ltcg - ltcgExempt);
+    const stcgTax = Math.max(0, stcg) * .20;
+    const ltcgTax = taxableLTCG * .125;
+    const vdaTax = Math.max(0, vda) * .30;
+    // Surcharge on CG is capped at 15% (for equity STCG/LTCG)
+    const cgBase = stcgTax + ltcgTax;
+    const totalGrossIncome = normalIncome + Math.max(0,stcg) + taxableLTCG + Math.max(0,vda);
+    const cgSurRate = totalGrossIncome > 20000000 ? .15 : totalGrossIncome > 10000000 ? .15 : totalGrossIncome > 5000000 ? .10 : 0;
+    const cgSur = cgBase * cgSurRate;
+    const total = Math.round((cgBase + cgSur + vdaTax) * 1.04);
+    return {stcgTax:Math.round(stcgTax), ltcgTax:Math.round(ltcgTax), ltcgExempt, vdaTax:Math.round(vdaTax), total};
   }
 };
 
-/* ── TAX ADVISOR (KPMG-style) ── */
-const advisor = (income, regime, used80C, usedNPS, usedHealth, usedLoanInt) => {
+/* ══════════════════════════════════════════
+   TAX ADVISOR — KPMG/EY-Style Recommendations
+   Income Tax Act 2025 / Finance Act 2025
+══════════════════════════════════════════ */
+const advisor = (income, regime, used80C, usedNPS, usedHealth, usedLoanInt, basicSalary, hasLTCG, hasVDA) => {
   const plans = [];
-  const slab = income > 1000000 ? .30 : income > 500000 ? .20 : .05;
-  const save = ded => inr(Math.round(ded * slab * 1.04));
+  // Precise slab rate calculation (new/old regimes slightly differ but use 30/20/5 for advisor)
+  const slab = income > 1500000 ? .30 : income > 1000000 ? .20 : income > 500000 ? .20 : .05;
+  // Tax saved = deduction × slab rate × 1.04 (cess)
+  const save = ded => inr(Math.round(n(ded) * slab * 1.04));
+  const saveAmt = ded => Math.round(n(ded) * slab * 1.04);
+
   if (regime === 'old') {
+    /* ── 80C — most common gap ── */
     const gap80C = Math.max(0, 150000 - n(used80C));
-    if (gap80C > 0) plans.push({p:'urgent',sec:'Section 80C',title:'Maximise 80C — Unused Limit',
-      desc:'Invest in ELSS (3yr lock, market returns) or PPF (7.1% tax-free) to utilise full Rs 1.5L limit.',
-      invest:inr(gap80C), save:save(gap80C)});
-    if (n(usedNPS) < 50000) plans.push({p:'urgent',sec:'80CCD(1B)',title:'Open NPS — Extra Rs 50K Deduction',
-      desc:'Completely SEPARATE from 80C limit. Open NPS Tier-1 at your bank. Best deduction after 80C in old regime.',
-      invest:inr(50000 - n(usedNPS)), save:save(50000 - n(usedNPS))});
-    if (n(usedHealth) < 25000) plans.push({p:'high',sec:'Section 80D',title:'Health Insurance — Deduction Unused',
-      desc:'Buy family floater policy. Rs 25,000 premium saves tax AND gives Rs 10L+ medical coverage for your family.',
-      invest:inr(25000 - n(usedHealth)), save:save(25000 - n(usedHealth))});
-    if (n(usedLoanInt) < 200000 && income > 800000) plans.push({p:'normal',sec:'Sec 24(b)',title:'Home Loan Interest — Rs 2L Deduction',
-      desc:'Home loan interest deduction saves significant tax at your slab. Also builds long-term asset.',
-      invest:'Home loan EMI interest', save:save(200000 - n(usedLoanInt))});
-    if (income > 1500000) plans.push({p:'normal',sec:'Section 80G',title:'Donations — 100% Deduction',
-      desc:'Donate to PM CARES, CRY, Helpage India via UPI/cheque. 100% deduction. Rs 50K donation costs only Rs 35K net at 30% slab.',
-      invest:'Rs 50,000 suggested', save:save(50000)});
+    if (gap80C > 0) plans.push({p:'urgent', sec:'Section 80C', title:'Maximise 80C — Gap of ' + inr(gap80C) + ' Unused',
+      desc:'Invest in ELSS (3-yr lock, historically 12–15% returns) or PPF (7.1% tax-free, EEE status). ELSS is the best 80C option for wealth creation alongside tax saving.',
+      invest: inr(gap80C), save: save(gap80C)});
+
+    /* ── 80CCD(1B) — NPS extra Rs 50K ── */
+    const npsGap = Math.max(0, 50000 - n(usedNPS));
+    if (npsGap > 0) plans.push({p:'urgent', sec:'Sec 80CCD(1B)', title:'NPS — Extra Rs 50K Deduction (Over 80C)',
+      desc:'Rs 50,000 additional deduction OVER AND ABOVE the Rs 1.5L 80C limit. Open NPS Tier-1 at nps.kfintech.com or any bank branch. 60% lump sum tax-free at 60.',
+      invest: inr(npsGap), save: save(npsGap)});
+
+    /* ── 80D — Health Insurance ── */
+    const healthGap = Math.max(0, 25000 - n(usedHealth));
+    if (healthGap > 0) plans.push({p:'high', sec:'Section 80D', title:'Health Insurance — Deduction Partially Unused',
+      desc:'Family floater policy (Rs 10L+ cover). Rs 25,000 deduction for self+family, PLUS Rs 25,000 more for parents. Preventive health checkup Rs 5,000 included within limit.',
+      invest: inr(25000 - n(usedHealth)), save: save(25000 - n(usedHealth))});
+
+    /* ── Section 24(b) Home Loan ── */
+    if (n(usedLoanInt) < 200000 && income > 800000) plans.push({p:'normal', sec:'Section 24(b)', title:'Home Loan Interest — Up to Rs 2L Deduction',
+      desc:'Annual interest on self-occupied property is deductible up to Rs 2,00,000. Check your bank statement amortisation schedule to confirm interest component. Under-construction property: claim from year of possession.',
+      invest: 'Home loan interest paid', save: save(200000 - n(usedLoanInt))});
+
+    /* ── 80CCD(2) Employer NPS ── */
+    if (n(basicSalary) > 0) {
+      const empNPSMax = Math.round(n(basicSalary) * .10);
+      plans.push({p:'high', sec:'Sec 80CCD(2)', title:'Employer NPS — 10% of Basic (Over All Limits)',
+        desc:'Ask HR to restructure CTC — route 10% of Basic through Employer NPS contribution. This deduction is OUTSIDE all other limits and available in OLD regime too.',
+        invest: inr(empNPSMax) + '/year via HR', save: save(empNPSMax)});
+    }
+
+    /* ── 80G Donations ── */
+    if (income > 1200000) plans.push({p:'normal', sec:'Section 80G', title:'Charitable Donations — 100% Deduction',
+      desc:'100% deduction: PM CARES Fund, PM National Relief Fund, CRY, Helpage India (via cheque/UPI). Rs 50,000 donation saves ' + save(50000) + ' in tax at your slab. Get Form 80G receipt.',
+      invest: 'Rs 50,000 suggested', save: save(50000)});
+
+    /* ── 80E Education Loan ── */
+    if (income > 800000) plans.push({p:'normal', sec:'Section 80E', title:'Education Loan Interest — No Cap Deduction',
+      desc:'If repaying education loan (self, spouse, or children), the FULL interest amount is deductible under 80E — no Rs limit. Available for 8 consecutive years. Only interest qualifies, not principal.',
+      invest: 'Existing loan interest', save: 'Full interest × slab'});
+
+    /* ── Regime switch check ── */
+    const totalDeds = n(used80C) + n(usedNPS) + n(usedHealth) + n(usedLoanInt);
+    if (income > 1275000 && totalDeds < 375000) plans.push({p:'normal', sec:'Regime Analysis', title:'Consider Switching to New Regime',
+      desc:'Your deductions (' + inr(totalDeds) + ') appear below the Rs 3.75L threshold where New Regime becomes beneficial. New Regime gives lower rates at ' + inr(income) + ' income. Run full comparison.',
+      invest: 'No investment needed', save: 'May save tax — compare'});
+
   } else {
-    if (income > 1400000) plans.push({p:'urgent',sec:'80CCD(2)',title:'Employer NPS — Only Major Deduction in New Regime',
-      desc:'Ask HR to route 14% of Basic as Employer NPS. ONLY significant deduction in New Regime beyond Rs 75K std deduction.',
-      invest:'14% of Basic via employer', save:'Up to Rs 84,000+'});
-    plans.push({p:'high',sec:'LTCG Harvest',title:'Book Rs 1.25L LTCG Every Year — Free',
-      desc:'Every April: book equity profits up to Rs 1.25L (zero tax). Sell and rebuy next day to reset cost. Do this EVERY year.',
-      invest:'Review portfolio in April', save:'Rs 15,625/year recurring'});
-    if (income > 2400000) plans.push({p:'normal',sec:'Regime Switch',title:'Consider Old Regime at Your Income Level',
-      desc:'With full 80C + NPS + Home Loan + Health Insurance deductions, old regime often saves Rs 50K-Rs 2L more above Rs 24L income.',
-      invest:'Compute with deductions', save:'Compute to find'});
+    /* ══ NEW REGIME ADVISOR ══ */
+
+    /* ── Employer NPS 80CCD(2) — ONLY major deduction ── */
+    if (n(basicSalary) > 0) {
+      const empNPS14 = Math.round(n(basicSalary) * .14);
+      plans.push({p:'urgent', sec:'Sec 80CCD(2)', title:'Employer NPS 14% of Basic — Only Big Deduction in New Regime',
+        desc:'Request HR to route 14% of your Basic salary as Employer NPS contribution. This is the ONLY significant deduction available in New Regime (besides Rs 75K standard deduction). Tax-free perquisite for you, deductible for employer.',
+        invest: inr(empNPS14) + '/year via HR (14% of Basic)', save: save(empNPS14)});
+    } else if (income > 1275000) {
+      plans.push({p:'urgent', sec:'Sec 80CCD(2)', title:'Employer NPS 14% of Basic — Only Major Deduction',
+        desc:'Ask HR to restructure CTC to include Employer NPS at 14% of Basic. At Rs 8L basic, this saves ' + save(112000) + ' in annual tax. It is the single highest-value action in New Regime.',
+        invest: '14% of Basic via employer payroll', save: save(Math.round(income * .14 * .5))});
+    }
+
+    /* ── LTCG Harvest ── */
+    plans.push({p:'high', sec:'LTCG Harvest', title:'Book Rs 1.25L LTCG Every April — Zero Tax, Free Saving',
+      desc:'Every April: sell equity/MF units with unrealised LTCG of up to Rs 1.25L. Pay ZERO tax (exempt under Sec 112A). Immediately repurchase to reset your cost basis. This saves Rs 15,625 per year at zero cost if you hold equity.',
+      invest: 'No new investment needed', save: 'Rs 15,625/year (recurring)'});
+
+    /* ── VDA / Crypto risk flag ── */
+    if (hasVDA) plans.push({p:'urgent', sec:'Sec 115BBH', title:'VDA/Crypto Tax Risk — 30% + No Loss Relief',
+      desc:'Crypto/VDA gains taxed at flat 30% + 4% cess. CRITICALLY: losses cannot be set off against any income, and cannot be carried forward. Ensure 1% TDS u/s 194S has been deducted on every transaction. File Schedule VDA in ITR.',
+      invest: 'Review all transactions', save: 'Avoid penalties/notices'});
+
+    /* ── Regime switch analysis for high earners with deductions ── */
+    if (income > 1600000) plans.push({p:'normal', sec:'Regime Comparison', title:'High Earners: Validate Old vs New Regime Annually',
+      desc:'At income above Rs 16L, if you have home loan + full 80C + NPS + health insurance (combined Rs 4L+), old regime may still save more. Recompute every April before first advance tax instalment. Do NOT lock into one regime without fresh calculation.',
+      invest: 'Compute annually in April', save: 'Potentially Rs 50K–Rs 2L+'});
+
+    /* ── Standard deduction reminder ── */
+    plans.push({p:'normal', sec:'Sec 16(ia)', title:'Standard Deduction Rs 75,000 — Auto-Applied',
+      desc:'Rs 75,000 Standard Deduction is automatically applied for salaried/pensioners in New Regime — no investment needed. Verify your Form 16 shows this correctly. Salary > Rs 7.75L needed for this to fully offset the 5% slab.',
+      invest: 'No action — auto-deducted', save: save(75000)});
   }
+
   return plans;
 };
 
@@ -1120,8 +1286,8 @@ const RegimeBanner = ({regime}) => (
     <div>
       <strong>{regime==='new' ? 'New Tax Regime Active (FY 2026-27)' : 'Old Tax Regime Active (FY 2026-27)'}</strong>
       {regime==='new'
-        ? ' — Only Rs 75,000 Standard Deduction + Employer NPS 80CCD(2) up to 14% of Basic are available. 80C, HRA, 80D, Home Loan Interest etc. are NOT applicable.'
-        : ' — All deductions active: 80C Rs 1.5L, HRA, 80D Health Insurance, Home Loan Interest Rs 2L, NPS Rs 50K, LTA, 80G and 40+ more.'}
+        ? ' — DEFAULT from AY 2025-26 (Sec 115BAC, Income Tax Act 2025). Only Rs 75,000 Standard Deduction + Employer NPS 80CCD(2) up to 14% of Basic available. 80C, HRA, 80D, Home Loan Interest Sec 24(b), LTA, 80G etc. are NOT applicable. Surcharge capped at 25%.'
+        : ' — Opt-in required (Form 10-IE or ITR filing). All Chapter VI-A deductions active: 80C Rs 1.5L, HRA, 80D Health Insurance, Home Loan Interest Rs 2L, NPS 80CCD(1B) Rs 50K, LTA, 80G, 80E, 80TTA/TTB and 40+ more.'}
     </div>
   </div>
 );
@@ -1190,7 +1356,7 @@ const Hero = ({onStart}) => (
       <h1 className="hero-h">India's Smartest <em>Tax Planner</em><br/>with <span style={{color:'var(--ai)'}}>AI Advisor</span></h1>
       <p className="hero-sub">Built by a finance professional — now with Claude AI embedded in every tab. Enter your data, get instant tax calculation AND personalised AI advice that finds every missed deduction.</p>
       <div className="feat-wrap">
-        {['Old vs New Regime','HRA Auto-Calc','80C / 80D Deductions','STCG / LTCG Engine','CSV Upload for Trades','House Property Module','KPMG-Style Tax Plans','ITR Form Suggestion'].map(f => (
+        {['Old vs New Regime','HRA Auto-Calc','80C / 80D Deductions','STCG / LTCG / VDA Engine','Income Tax Act 2025','House Property Module','KPMG-Style Tax Plans','New ITR Form Suggestion','Export CSV / JSON','Import / Save Session'].map(f => (
           <div className="feat" key={f}><span style={{color:'var(--green)'}}>✓</span> {f}</div>
         ))}
       </div>
@@ -1745,7 +1911,8 @@ const ModFreelancer = ({regime, profile, onUpdate}) => {
         <div className="fg">
           <label>Gross Professional Receipts (Annual) <Tip t="Total amount billed and received from all clients in FY 2026-27. Exclude GST collected. Use Form 26AS to verify. Include all bank credits for professional services."/></label>
           <Mon value={d.gross} onChange={s('gross')} placeholder="2000000"/>
-          {gross>5000000&&<span className="emsg">Receipts exceed Rs 50L — 44ADA not applicable. Tax Audit u/s 44AB required. Please consult a CA.</span>}
+          {gross>7500000&&<span className="emsg">Receipts exceed Rs 75L (digital) — 44ADA Presumptive not applicable. Tax Audit u/s 44AB mandatory. Consult a CA immediately.</span>}
+        {gross>5000000&&gross<=7500000&&<span className="hint" style={{color:'var(--amber)',fontWeight:600}}>⚠️ Between Rs 50L–75L: 44ADA applies ONLY if all receipts are via digital mode (bank/UPI/cheque). Any cash receipts → limit is Rs 50L.</span>}
         </div>
       </div>
 
@@ -2412,12 +2579,14 @@ const OverviewTab = ({res, regime, profile, itrForm, onTabSwitch}) => {
   const upgradeHint = aiCfg ? PROVIDER_UPGRADE[aiCfg.provider] : null;
 
   const ITR_FORMS_2026 = {
-    'ITR-1 (Sahaj)': 'Salary + one house property + interest income only. Income below Rs 50L.',
-    'ITR-2': 'Salary + capital gains + house property + foreign assets. No business income.',
-    'ITR-3': 'Business or professional income + all other sources. Freelancers, traders.',
-    'ITR-4 (Sugam)': '44AD/44ADA/44AE presumptive income. Turnover below limits.',
-    'ITR-5': 'Firms, LLPs, AOPs, BOIs.',
-    'ITR-6': 'Companies other than claiming Sec 11 exemption.',
+    'ITR-1 (Sahaj)': 'Salary/pension + ONE house property + interest/dividends. Income ≤ Rs 50L. Resident Indian only. NOT for directors, foreign assets, or capital gains.',
+    'ITR-2': 'Salary + capital gains (equity, MF, property) + multiple properties + foreign income/assets. Directors of companies. Income > Rs 50L. No business income.',
+    'ITR-3': 'Business or professional income (regular books) + all other sources. F&O/intraday traders, freelancers with actual expenses, directors with business income.',
+    'ITR-4 (Sugam)': 'Presumptive income u/s 44AD/44ADA/44AE. Professionals ≤ Rs 75L turnover (digital). Business ≤ Rs 3 Cr. Cannot have capital gains or foreign assets.',
+    'ITR-5': 'Firms, LLPs, AOPs, BOIs, Estate of deceased. Not for companies or individuals.',
+    'ITR-6': 'Companies (other than Sec 11 exemption). Filed electronically only.',
+    'ITR-7': 'Trusts, political parties, research institutions, universities (Sec 139(4A)/(4B)/(4C)/(4D)).',
+    'ITR-U (Updated)': 'Correct errors / omissions in any previously filed ITR within 24 months of the end of relevant AY. Pay 25%/50% additional tax on underpaid amount.',
   };
 
   const income_bars = [
@@ -2566,6 +2735,277 @@ const OverviewTab = ({res, regime, profile, itrForm, onTabSwitch}) => {
   );
 };
 
+/* ══════════════════════════════════════════════════════════
+   DATA MANAGEMENT COMPONENT
+   Export JSON / Export CSV / Import / Save Session /
+   Print Report / Delete All / Refresh App
+══════════════════════════════════════════════════════════ */
+const DataManagement = ({salData, freData, tradeData, propData, profile, regime, res, onImport}) => {
+  const [importMsg, setImportMsg] = useState('');
+  const [saveMsg, setSaveMsg]     = useState('');
+  const fileRef = useRef();
+
+  /* ── Local session helpers ── */
+  const LS_KEY = 'taxsmart_v8_session';
+  const savedAt = (() => {
+    try { const d = JSON.parse(localStorage.getItem(LS_KEY)||'null'); return d ? d.savedAt : null; }
+    catch(e) { return null; }
+  })();
+
+  const saveSession = () => {
+    const snap = {
+      v:8, savedAt: new Date().toISOString(),
+      profile, regime,
+      salData, freData, tradeData, propData,
+      taxResult: {normalInc:res.normalInc, incomeTax:res.incomeTax, cgTax:res.cgTax, totalTax:res.totalTax, eff:res.eff, newT:res.newT, oldT:res.oldT}
+    };
+    try {
+      localStorage.setItem(LS_KEY, JSON.stringify(snap));
+      setSaveMsg('ok'); setTimeout(() => setSaveMsg(''), 3000);
+    } catch(e) { setSaveMsg('err'); setTimeout(() => setSaveMsg(''), 3000); }
+  };
+
+  /* ── Export JSON ── */
+  const exportJSON = () => {
+    const data = {
+      app:'TaxSmartIndia Pro v8 by Vipin Nair', fy:'FY 2026-27', ay:'AY 2027-28',
+      exportedAt: new Date().toISOString(),
+      profile, regime,
+      incomeModules: { salData, freData, tradeData, propData },
+      taxResult: {
+        normalIncome:res.normalInc, cgTax:res.cgTax,
+        incomeTax:res.incomeTax, totalTax:res.totalTax,
+        effectiveRate:res.eff+'%', newRegimeTax:res.newT, oldRegimeTax:res.oldT,
+        regimeSaving: Math.abs((res.newT||0)-(res.oldT||0)),
+        betterRegime: (res.newT||0)<=(res.oldT||0)?'New Regime':'Old Regime'
+      }
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url;
+    a.download = `TaxSmartIndia_${(profile?.name||'data').replace(/\s+/g,'_')}_FY2026-27.json`;
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a); URL.revokeObjectURL(url);
+  };
+
+  /* ── Export CSV ── */
+  const exportCSV = () => {
+    const q = v => `"${String(v||'').replace(/"/g,'""')}"`;
+    const rows = [
+      [q('TaxSmartIndia Pro v8 — Tax Summary Report')],
+      [q('Generated by Vipin Nair'), q(new Date().toLocaleString('en-IN'))],
+      [''],
+      [q('TAXPAYER PROFILE'), ''],
+      [q('Name'),           q(profile?.name||'')],
+      [q('PAN'),            q(profile?.pan||'')],
+      [q('Age (yrs)'),      q(profile?.age||'')],
+      [q('City'),           q(profile?.city||'')],
+      [q('Residency'),      q(profile?.residency||'Resident')],
+      [q('Category'),       q(profile?.isSuperSenior?'Super Senior (80+)':profile?.isSenior?'Senior Citizen (60+)':'General')],
+      [q('Employment'),     q(profile?.employment||'')],
+      [''],
+      [q('TAX REGIME'),     q(regime==='new'?'New Regime (Default — Finance Act 2025)':'Old Regime')],
+      [''],
+      [q('INCOME BREAKDOWN'),''],
+      [q('Salary / Net Taxable Salary'),  q(res.salTax||0)],
+      [q('Business / Freelance Income'),  q(res.freTax||0)],
+      [q('Speculative / F&O Income'),     q(res.specInc||0)],
+      [q('House Property Income / Loss'), q(res.hpInc||0)],
+      [q('STCG (Short-Term Capital Gains)'), q(res.stcg||0)],
+      [q('LTCG (Long-Term Capital Gains)'),  q(res.ltcg||0)],
+      [q('Total Normal Income'),          q(res.normalInc||0)],
+      [''],
+      [q('TAX COMPUTATION (FY 2026-27 / AY 2027-28)'), ''],
+      [q('Income Tax on Normal Income (incl. 4% Cess)'), q(res.incomeTax||0)],
+      [q('Capital Gains Tax (STCG+LTCG)'),               q(res.cgTax||0)],
+      [q('Total Tax Payable'),                            q(res.totalTax||0)],
+      [q('Effective Tax Rate'),                           q((res.eff||0)+'%')],
+      [''],
+      [q('REGIME COMPARISON'),''],
+      [q('New Regime Tax'),  q(res.newT||0)],
+      [q('Old Regime Tax'),  q(res.oldT||0)],
+      [q('Tax Saving (Chosen Regime vs Other)'), q(Math.abs((res.newT||0)-(res.oldT||0)))],
+      [q('Recommended Regime'), q((res.newT||0)<=(res.oldT||0)?'New Regime':'Old Regime')],
+      [''],
+      [q('Disclaimer: Estimates only. Consult a CA for final filing. Tool by Vipin Nair — audit.vipin@gmail.com')]
+    ];
+    const csv = rows.map(r => r.join(',')).join('\r\n');
+    const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8'}); // BOM for Excel
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url;
+    a.download = `TaxSmartIndia_${(profile?.name||'data').replace(/\s+/g,'_')}_FY2026-27.csv`;
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a); URL.revokeObjectURL(url);
+  };
+
+  /* ── Import ── */
+  const handleImport = e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try {
+        const data = JSON.parse(ev.target.result);
+        if (!data.profile) { setImportMsg('error:Invalid file — no profile data found. Ensure this is a TaxSmartIndia Pro export.'); return; }
+        onImport(data);
+        setImportMsg('ok:Data loaded for ' + data.profile.name + ' (FY ' + (data.fy||'2026-27') + '). Switch to any income tab to review or edit.');
+      } catch(err) { setImportMsg('error:Could not parse file. Use a JSON file exported from TaxSmartIndia Pro v8.'); }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  };
+
+  /* ── Delete ── */
+  const deleteAll = () => {
+    if (!window.confirm('⚠️ Delete ALL data?\n\nThis will clear all saved sessions, AI settings, and reload the app.\n\nThis cannot be undone.')) return;
+    try { localStorage.clear(); } catch(e){}
+    clearAIConfig();
+    window.location.reload();
+  };
+
+  /* ── Summary cards data ── */
+  const ACTIONS = [
+    {icon:'💾', color:'#059669', bg:'#ecfdf5', border:'#a7f3d0',
+     label:'Save Session', sub:'Save to browser storage (auto-restored on reload)',
+     pill: saveMsg==='ok' ? '✅ Saved!' : saveMsg==='err' ? '❌ Failed' : savedAt ? '🕐 Last: '+new Date(savedAt).toLocaleTimeString('en-IN') : 'Not saved yet',
+     action: saveSession},
+    {icon:'📥', color:'#1a56db', bg:'#eff6ff', border:'#bfdbfe',
+     label:'Export JSON', sub:'Download full income data + results as .json file',
+     pill:'All modules + tax result', action: exportJSON},
+    {icon:'📊', color:'#7c3aed', bg:'#f5f3ff', border:'#c4b5fd',
+     label:'Export CSV', sub:'Download tax summary as .csv (opens in Excel)',
+     pill:'Tax summary spreadsheet', action: exportCSV},
+    {icon:'🖨️', color:'#374151', bg:'#f9fafb', border:'#e5e7eb',
+     label:'Print / PDF Report', sub:'Open print dialog — choose "Save as PDF" in browser',
+     pill:'Browser Print → PDF', action: ()=>window.print()},
+  ];
+
+  return (
+    <div>
+      {/* Header */}
+      <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:22,paddingBottom:18,borderBottom:'2px solid var(--line)'}}>
+        <div style={{width:44,height:44,borderRadius:12,background:'linear-gradient(135deg,#1a56db,#7c3aed)',display:'flex',alignItems:'center',justifyContent:'center',color:'#fff',fontSize:20,flexShrink:0}}>🗄️</div>
+        <div>
+          <div style={{fontSize:17,fontWeight:800,color:'var(--ink)',letterSpacing:'-.3px'}}>Data Management</div>
+          <div style={{fontSize:12,color:'var(--ink3)',marginTop:2}}>Export, import, save, print or reset your tax calculation data — 100% browser-based</div>
+        </div>
+        <div style={{marginLeft:'auto',display:'flex',gap:6,flexWrap:'wrap'}}>
+          {savedAt && <span className="pill p-green">💾 Session Saved</span>}
+          <span className="pill p-blue">v8 — FY 2026-27</span>
+        </div>
+      </div>
+
+      {/* Action Grid */}
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:20}}>
+        {ACTIONS.map((a,i) => (
+          <div key={i} onClick={a.action}
+            style={{border:'1.5px solid '+a.border,borderRadius:14,padding:18,cursor:'pointer',
+              background:a.bg,transition:'all .15s ease',userSelect:'none'}}
+            onMouseEnter={e=>{e.currentTarget.style.transform='translateY(-2px)';e.currentTarget.style.boxShadow='0 4px 16px rgba(0,0,0,.08)'}}
+            onMouseLeave={e=>{e.currentTarget.style.transform='';e.currentTarget.style.boxShadow=''}}>
+            <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:8}}>
+              <span style={{fontSize:26,lineHeight:1}}>{a.icon}</span>
+              <div>
+                <div style={{fontWeight:800,fontSize:13.5,color:a.color}}>{a.label}</div>
+                <div style={{fontSize:11.5,color:'var(--ink3)',marginTop:1,lineHeight:1.4}}>{a.sub}</div>
+              </div>
+            </div>
+            <div style={{fontSize:11,fontWeight:700,color:a.color,background:'rgba(255,255,255,.7)',
+              padding:'3px 9px',borderRadius:20,display:'inline-block',border:'1px solid '+a.border}}>
+              {a.pill}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Import Section */}
+      <div style={{border:'1.5px dashed #fcd34d',borderRadius:14,padding:18,background:'#fffbeb',marginBottom:14}}>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:12}}>
+          <div style={{display:'flex',alignItems:'center',gap:10}}>
+            <span style={{fontSize:26}}>📤</span>
+            <div>
+              <div style={{fontWeight:800,fontSize:13.5,color:'#d97706'}}>Import Data</div>
+              <div style={{fontSize:11.5,color:'#92400e',marginTop:1}}>Load a previously exported TaxSmartIndia Pro JSON file to restore your data</div>
+            </div>
+          </div>
+          <button onClick={()=>fileRef.current.click()}
+            style={{background:'#d97706',color:'#fff',border:'none',borderRadius:8,padding:'8px 18px',
+              fontWeight:700,fontSize:13,cursor:'pointer',fontFamily:'var(--font)',whiteSpace:'nowrap',
+              display:'inline-flex',alignItems:'center',gap:6}}>
+            📂 Choose JSON File →
+          </button>
+          <input ref={fileRef} type="file" accept=".json" onChange={handleImport} style={{display:'none'}}/>
+        </div>
+        {importMsg && (
+          <div style={{marginTop:12,padding:'10px 14px',borderRadius:10,fontSize:13,lineHeight:1.6,
+            background:importMsg.startsWith('ok:') ? '#ecfdf5' : '#fef2f2',
+            borderLeft:'3px solid '+(importMsg.startsWith('ok:') ? '#059669' : '#dc2626'),
+            color:importMsg.startsWith('ok:') ? '#065f46' : '#991b1b'}}>
+            {importMsg.startsWith('ok:') ? '✅ ' : '❌ '}{importMsg.replace(/^(ok|error):/,'')}
+          </div>
+        )}
+      </div>
+
+      {/* Session Status */}
+      {savedAt && (
+        <div style={{border:'1px solid #a7f3d0',borderRadius:12,padding:14,background:'#ecfdf5',marginBottom:14}}>
+          <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:8}}>
+            <span style={{fontSize:18}}>💾</span>
+            <div style={{fontWeight:700,fontSize:13,color:'#059669'}}>Browser Session Saved</div>
+            <span className="pill p-green" style={{marginLeft:'auto'}}>Auto-restores on reload</span>
+          </div>
+          <div style={{fontSize:12,color:'#065f46',lineHeight:1.6}}>
+            <strong>Saved:</strong> {new Date(savedAt).toLocaleString('en-IN')} &nbsp;|&nbsp;
+            <strong>Taxpayer:</strong> {profile?.name||'—'} &nbsp;|&nbsp;
+            <strong>Regime:</strong> {regime==='new'?'New Regime':'Old Regime'} &nbsp;|&nbsp;
+            <strong>Tax:</strong> {inr(res.totalTax)}
+          </div>
+        </div>
+      )}
+
+      {/* Danger Zone */}
+      <div style={{border:'1.5px solid #fecaca',borderRadius:14,padding:18,background:'#fef2f2'}}>
+        <div style={{fontWeight:800,fontSize:12,color:'#dc2626',textTransform:'uppercase',letterSpacing:'.6px',marginBottom:14,display:'flex',alignItems:'center',gap:6}}>
+          <span style={{fontSize:16}}>⚠️</span> Danger Zone
+        </div>
+        <div style={{display:'flex',gap:12,alignItems:'center',justifyContent:'space-between',flexWrap:'wrap'}}>
+          <div style={{fontSize:12.5,color:'#991b1b',lineHeight:1.65,flex:1}}>
+            <strong>Refresh App</strong> — Reloads the page. Previously saved browser sessions will be auto-restored.<br/>
+            <strong>Delete All Data</strong> — Permanently clears all form data, saved sessions, and AI settings. App resets to start screen. <em>This cannot be undone.</em>
+          </div>
+          <div style={{display:'flex',gap:8,flexShrink:0}}>
+            <button onClick={()=>window.location.reload()}
+              style={{background:'#d97706',color:'#fff',border:'none',borderRadius:8,padding:'9px 16px',
+                fontWeight:700,fontSize:12.5,cursor:'pointer',fontFamily:'var(--font)',
+                display:'inline-flex',alignItems:'center',gap:6}}>
+              🔄 Refresh App
+            </button>
+            <button onClick={deleteAll}
+              style={{background:'#dc2626',color:'#fff',border:'none',borderRadius:8,padding:'9px 16px',
+                fontWeight:700,fontSize:12.5,cursor:'pointer',fontFamily:'var(--font)',
+                display:'inline-flex',alignItems:'center',gap:6}}>
+              🗑️ Delete All Data
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Privacy Note */}
+      <div className="al al-blue" style={{marginTop:16}}>
+        <span className="al-icon">🔒</span>
+        <div style={{fontSize:12,lineHeight:1.7}}>
+          <strong>100% Private:</strong> All data lives exclusively in your browser. Nothing is transmitted to any server.
+          <strong> Export files</strong> are saved on your device only.
+          <strong> Saved sessions</strong> use browser localStorage — clearing browser data or incognito mode will erase them.
+          Your PAN and financial data never leave your device.
+        </div>
+      </div>
+    </div>
+  );
+};
+
 /* ── SCREEN 4: MODULES + FINAL TAX ── */
 const Modules = ({profile, regime: initRegime}) => {
   const [tab,setTab] = useState('overview');
@@ -2580,12 +3020,13 @@ const Modules = ({profile, regime: initRegime}) => {
   const [aiConfig,setAIConfig] = useState(loadAIConfig);
 
   const tabs = [
-    {id:'overview',icon:'📊',label:'Overview'},
-    {id:'salary',icon:'💼',label:'Salaried Employee'},
-    {id:'freelance',icon:'💻',label:'Freelancer or Consultant'},
-    {id:'trading',icon:'📈',label:'Stock Market and Capital Gains'},
-    {id:'property',icon:'🏠',label:'House Property'},
-    {id:'advtax',icon:'📅',label:'Advance Tax'},
+    {id:'overview',  icon:'📊', label:'Overview'},
+    {id:'salary',    icon:'💼', label:'Salaried Employee'},
+    {id:'freelance', icon:'💻', label:'Freelancer / Consultant'},
+    {id:'trading',   icon:'📈', label:'Capital Gains & Trades'},
+    {id:'property',  icon:'🏠', label:'House Property'},
+    {id:'advtax',    icon:'📅', label:'Advance Tax'},
+    {id:'data',      icon:'🗄️', label:'Data Management'},
   ];
 
   const res = useMemo(() => {
@@ -2601,29 +3042,75 @@ const Modules = ({profile, regime: initRegime}) => {
     const totalTax = incomeTax + cgTax;
     const grossAll = normalInc + Math.max(0,stcg) + Math.max(0,ltcg);
     const eff = grossAll > 0 ? ((totalTax/grossAll)*100).toFixed(1) : '0';
-    const plans = advisor(normalInc, regime, salData&&salData.elig80C, salData&&salData.npsOwn, (salData&&salData.healthSelf||0)+(salData&&salData.healthPar||0), salData&&salData.homeLoanInt);
+    const plans = advisor(
+      normalInc, regime,
+      salData&&salData.elig80C,
+      salData&&salData.npsOwn,
+      (salData&&salData.healthSelf||0)+(salData&&salData.healthPar||0),
+      salData&&salData.homeLoanInt,
+      salData&&salData.basic,
+      Math.abs(n(tradeData&&tradeData.ltcg)) > 0,
+      Math.abs(n(tradeData&&tradeData.vda)) > 0
+    );
     const newT = TAX.newRegime(normalInc) + cgTax;
     const oldT = TAX.oldRegime(normalInc, profile.isSenior, profile.isSuperSenior) + cgTax;
     return {salTax,freTax,specInc,hpInc,stcg,ltcg,cgTax,normalInc,incomeTax,totalTax,grossAll,eff,plans,newT,oldT};
   }, [salData,freData,tradeData,propData,regime]);
 
   const itrForm = useMemo(() => {
-    const hasCG = Math.abs(n(tradeData&&tradeData.stcg)) + Math.abs(n(tradeData&&tradeData.ltcg)) + Math.abs(n(tradeData&&tradeData.spec)) > 0;
-    const hasBiz = n(freData&&freData.grossReceipts) > 0;
-    const hasFnO = Math.abs(n(tradeData&&tradeData.spec)) > 0;
-    const grossIncome = res.normalInc + Math.max(0,n(tradeData&&tradeData.stcg)) + Math.max(0,n(tradeData&&tradeData.ltcg));
+    /* ── ITR Form Determination — Income Tax Act 2025 / Rules 2026 ── */
+    const stcg = Math.abs(n(tradeData&&tradeData.stcg));
+    const ltcg = Math.abs(n(tradeData&&tradeData.ltcg));
+    const spec = Math.abs(n(tradeData&&tradeData.spec));
+    const vda  = Math.abs(n(tradeData&&tradeData.vda));
+    const hasCG      = stcg + ltcg + spec + vda > 0;
+    const hasLTCGSTCG= stcg + ltcg > 0;
+    const hasFnO     = spec > 0; // F&O / Intraday = speculative business income
+    const hasVDA     = vda > 0;
+    const hasBiz     = n(freData&&freData.grossReceipts) > 0;
     const isPresumptive = freData && freData.mode === '44ADA';
-    // Income Tax Act 2026 ITR Forms
-    if (hasFnO && hasBiz) return {f:'ITR-3', r:'F&O trading (speculative business) + professional income. Mandatory books of accounts.'};
-    if (hasFnO) return {f:'ITR-3', r:'F&O / Intraday trading treated as speculative business income under IT Act 2026.'};
-    if (hasBiz && hasCG) return {f:'ITR-3', r:'Business/professional income with capital gains. Cannot use ITR-4.'};
-    if (hasBiz && isPresumptive && !hasCG && grossIncome <= 5000000) return {f:'ITR-4 (Sugam)', r:'Presumptive income u/s 44ADA. Gross income below Rs 50L. Simplified filing.'};
-    if (hasBiz) return {f:'ITR-3', r:'Business or professional income present. Actual books of accounts.'};
-    if (hasCG) return {f:'ITR-2', r:'Capital gains from equity/MF/property. Salary + other sources also reportable.'};
-    if (n(propData&&propData.totalHP) !== 0) return {f:'ITR-2', r:'Multiple house properties or loss from property. Salary + property income.'};
-    if (grossIncome > 5000000) return {f:'ITR-2', r:'Income exceeds Rs 50L — ITR-1 not applicable. Use ITR-2.'};
-    return {f:'ITR-1 (Sahaj)', r:'Salary + one house property + interest income. Income below Rs 50L. Simplest form.'};
-  }, [tradeData,freData,propData,res]);
+    const hasProp    = n(propData&&propData.totalHP) !== 0;
+    const multiProp  = propData && propData.properties && propData.properties.length > 1;
+    const grossIncome= res.normalInc + Math.max(0,n(tradeData&&tradeData.stcg)) + Math.max(0,n(tradeData&&tradeData.ltcg));
+    const isNRI      = profile && profile.residency && profile.residency !== 'Resident';
+    const highIncome = grossIncome > 5000000; // > Rs 50L
+
+    // Priority rules — most restrictive form first
+    // F&O + business → ITR-3 (mandatory books of accounts)
+    if (hasFnO && hasBiz)
+      return {f:'ITR-3', r:'F&O/Intraday trading (speculative business income u/s 43(5)) combined with professional income. Mandatory books of accounts. Consider filing Form 3CB-3CD if turnover > Rs 1 Cr.'};
+    // F&O alone → ITR-3
+    if (hasFnO)
+      return {f:'ITR-3', r:'F&O and/or Intraday trading is treated as speculative business income u/s 43(5). ITR-3 mandatory. Maintain trade-wise P&L from broker statement. TDS on profits u/s 194J if applicable.'};
+    // VDA / Crypto → ITR-2 (if no business) or ITR-3 (if trading business)
+    if (hasVDA && hasBiz)
+      return {f:'ITR-3', r:'VDA/Crypto gains (Sec 115BBH — 30% flat tax) combined with business/professional income. Report each VDA transaction separately in Schedule VDA.'};
+    if (hasVDA)
+      return {f:'ITR-2', r:'VDA/Crypto transactions (Sec 115BBH) must be reported in Schedule VDA. 30% flat tax + 4% cess. No loss set-off against any other income. Verify Form 26AS for 1% TDS u/s 194S.'};
+    // Business + capital gains → ITR-3 (ITR-4 not permitted with CG)
+    if (hasBiz && hasCG)
+      return {f:'ITR-3', r:'Business/professional income with capital gains. ITR-4 Sugam is NOT applicable when capital gains exist. Use ITR-3 with actual books or presumptive method shown separately.'};
+    // Presumptive + no CG + income within limit → ITR-4
+    if (hasBiz && isPresumptive && !hasCG && grossIncome <= 7500000)
+      return {f:'ITR-4 (Sugam)', r:'Presumptive income u/s 44ADA (professionals ≤ Rs 75L digital / Rs 50L cash). Declare 50% as taxable income — no detailed books needed. Cannot use ITR-4 if you have capital gains or foreign assets.'};
+    // Business (actual books) → ITR-3
+    if (hasBiz)
+      return {f:'ITR-3', r:'Business or professional income with actual books of accounts. Report P&L and Balance Sheet in ITR-3. Tax Audit u/s 44AB if turnover > Rs 1 Cr (business) / Rs 50L (profession).'};
+    // Capital gains (LTCG/STCG equity/MF) → ITR-2
+    if (hasLTCGSTCG)
+      return {f:'ITR-2', r:'Equity/MF capital gains (LTCG 12.5% u/s 112A / STCG 20% u/s 111A) must be reported in Schedule CG. Remember: Rs 1.25L LTCG exempt per year. Surcharge on STCG/LTCG capped at 15%.'};
+    // Multiple/loss-making house properties → ITR-2
+    if (multiProp || (hasProp && n(propData&&propData.totalHP) < 0))
+      return {f:'ITR-2', r:'Multiple house properties or house property loss reported. Loss up to Rs 2L set-off against salary. Carry forward balance 8 years. Requires Schedule HP in ITR-2.'};
+    // NRI → ITR-2 (ITR-1 only for Resident Indians)
+    if (isNRI)
+      return {f:'ITR-2', r:'NRI/RNOR taxpayers CANNOT use ITR-1 (Sahaj). ITR-2 is mandatory. Report only India-sourced income. Foreign tax credit (DTAA) claimed via Schedule FSI and Schedule TR.'};
+    // High income → ITR-2
+    if (highIncome)
+      return {f:'ITR-2', r:'Income exceeds Rs 50 Lakh — ITR-1 (Sahaj) is NOT applicable. Use ITR-2 for salary + one property + interest income. Mandatory disclosure of assets & liabilities in Schedule AL.'};
+    // Default: simple salaried, single property, income ≤ 50L → ITR-1
+    return {f:'ITR-1 (Sahaj)', r:'Salary/pension + at most one house property + interest income/dividends. Income below Rs 50L. Resident Indian only. Simplest and fastest to file on the Income Tax e-portal. Cannot use if you are a director or hold foreign assets.'};
+  }, [tradeData,freData,propData,res,profile]);
 
   const handleCompute = () => {
     setShowResult(true);
@@ -2656,8 +3143,18 @@ const Modules = ({profile, regime: initRegime}) => {
         <div className="card-head">
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',flexWrap:'wrap',gap:8}}>
             <div>
-              <div className="card-title">{tab==='overview'?'Tax Dashboard Overview':tab==='advtax'?'Advance Tax Calculator':'Income Details — All Sources'}</div>
-              <div className="card-sub">{tab==='overview'?'Complete summary of your tax position, deadlines, and AI status.':tab==='advtax'?'Calculate quarterly instalments, interest u/s 234B and 234C.':'Fill each tab relevant to your income. Regime can be switched anytime above.'}</div>
+              <div className="card-title">
+                {tab==='overview'  ? 'Tax Dashboard Overview'
+                : tab==='advtax'   ? 'Advance Tax Calculator'
+                : tab==='data'     ? 'Data Management — Export / Import / Save'
+                : 'Income Details — All Sources'}
+              </div>
+              <div className="card-sub">
+                {tab==='overview'  ? 'Complete summary of your tax position, ITR form, deadlines, and AI status.'
+                : tab==='advtax'   ? 'Calculate quarterly instalments, interest u/s 234B and 234C.'
+                : tab==='data'     ? 'Export your data as JSON or CSV, import a saved session, print report, or reset all data.'
+                : 'Fill each tab relevant to your income sources. Regime can be switched anytime above.'}
+              </div>
             </div>
             <span className="pill p-blue">Step 3 of 3</span>
           </div>
@@ -2670,12 +3167,22 @@ const Modules = ({profile, regime: initRegime}) => {
           ))}
         </div>
         <div className="card-body">
-          {tab==='overview' && <OverviewTab res={res} regime={regime} profile={profile} itrForm={itrForm} onTabSwitch={t=>setTab(t==='final'?tab:t)}/>}
-          {tab==='salary' && <ModSalary regime={regime} profile={profile} onUpdate={setSalData}/>}
+          {tab==='overview'  && <OverviewTab res={res} regime={regime} profile={profile} itrForm={itrForm} onTabSwitch={t=>setTab(t==='final'?tab:t)}/>}
+          {tab==='salary'    && <ModSalary regime={regime} profile={profile} onUpdate={setSalData}/>}
           {tab==='freelance' && <ModFreelancer regime={regime} profile={profile} onUpdate={setFreData}/>}
-          {tab==='trading' && <ModTrader onUpdate={setTradeData} profile={profile}/>}
-          {tab==='property' && <ModProperty regime={regime} onUpdate={setPropData} profile={profile}/>}
-          {tab==='advtax' && <AdvanceTax totalTax={res.totalTax} regime={regime}/>}
+          {tab==='trading'   && <ModTrader onUpdate={setTradeData} profile={profile}/>}
+          {tab==='property'  && <ModProperty regime={regime} onUpdate={setPropData} profile={profile}/>}
+          {tab==='advtax'    && <AdvanceTax totalTax={res.totalTax} regime={regime}/>}
+          {tab==='data'      && (
+            <DataManagement
+              salData={salData} freData={freData} tradeData={tradeData} propData={propData}
+              profile={profile} regime={regime} res={res}
+              onImport={data => {
+                // Save imported data to localStorage and notify user to reload to restore
+                try { localStorage.setItem('taxsmart_v8_session', JSON.stringify({...data, savedAt: new Date().toISOString()})); } catch(e){}
+              }}
+            />
+          )}
         </div>
         <div className="card-foot">
           <div>
@@ -2936,9 +3443,10 @@ const App = () => {
             </div>
           </div>
           <div className="ft-disclaimer">
-            <strong>Disclaimer:</strong> This tool was thoughtfully created by Vipin Nair as an educational guide to help you easily estimate your Income Tax for FY 2026-27 (based on the Income Tax Act 2025 and Finance Act 2026).<br/><br/>
-            <strong>🔒 Your Data is 100% Private:</strong> We respect your privacy. All calculations happen directly within your browser. Absolutely no personal or financial data is stored, saved, or transmitted to any servers.<br/><br/>
-            <strong>💡 A Quick Note on Tax Advice:</strong> While we strive for the highest accuracy, tax laws are complex and personal to your unique situation. TaxSmartIndia Pro is meant for educational and estimation purposes only. It does not replace professional legal or CA services. To ensure your final filings are perfect, we always encourage consulting with a qualified Chartered Accountant or tax professional. The creator assumes no liability for discrepancies in final tax obligations.
+            <strong>Disclaimer:</strong> TaxSmartIndia Pro v8 is an educational tax estimation tool created by Vipin Nair for FY 2026-27 (AY 2027-28), incorporating provisions of the Income Tax Act 2025, Finance Act 2025, and New Income Tax Rules 2026.<br/><br/>
+            <strong>🔒 Your Data is 100% Private:</strong> All calculations happen entirely within your browser. No personal or financial data is ever transmitted to, stored on, or processed by any server. Export files remain on your device only.<br/><br/>
+            <strong>💡 Important Note on Tax Advice:</strong> Tax laws are complex and personal circumstances vary widely. TaxSmartIndia Pro is for educational and estimation purposes only — it does not constitute professional legal, financial, or CA advice. Always verify with a qualified Chartered Accountant before filing your ITR. The creator assumes no liability for any discrepancies in final tax obligations.<br/><br/>
+            <strong>📋 v8 Highlights:</strong> New Income Tax Act 2025 compliance · New regime surcharge cap 25% · Revised LTCG/STCG/VDA rates · Enhanced ITR form logic · KPMG-style advisor improvements · Data Export/Import/Save/Delete management.
           </div>
           <div className="ft-bottom">
             <span>Made for Indian Taxpayers with ❤️ by <strong style={{color:'#93c5fd'}}>Vipin Nair</strong> · {EMAIL}</span>

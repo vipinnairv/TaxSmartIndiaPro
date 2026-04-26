@@ -660,11 +660,82 @@ const AISetupModal = ({onDone, onClose}) => {
             </select>
           </div>
 
-          {/* API Key */}
+          {/* How to get API key guide */}
+          {(() => {
+            const guides = {
+              groq: {
+                badge: '🆓 100% Free · No Credit Card',
+                color: '#059669',
+                bg: '#ecfdf5',
+                border: '#a7f3d0',
+                steps: [
+                  {n:'1', t:'Open Groq Console', d:'Go to console.groq.com and click "Sign Up" — use Google or GitHub login, no credit card needed.', url:'https://console.groq.com/keys', cta:'Open console.groq.com →'},
+                  {n:'2', t:'Create an API Key', d:'Click "API Keys" in the left sidebar → "Create API Key" → give it any name (e.g. TaxCalc) → copy the key starting with gsk_...'},
+                  {n:'3', t:'Paste it below', d:'Paste the copied key in the field below and click "Save and Activate AI". Done!'},
+                ]
+              },
+              gemini: {
+                badge: '🆓 Free with Google Account',
+                color: '#1a56db',
+                bg: '#eff6ff',
+                border: '#bfdbfe',
+                steps: [
+                  {n:'1', t:'Open Google AI Studio', d:'Go to aistudio.google.com — sign in with your existing Google account. No payment needed.', url:'https://aistudio.google.com/app/apikey', cta:'Open AI Studio →'},
+                  {n:'2', t:'Get API Key', d:'Click "Get API Key" → "Create API Key in new project" → copy the key starting with AIza...'},
+                  {n:'3', t:'Paste it below', d:'Paste the key in the field below and click "Save and Activate AI".'},
+                ]
+              },
+              anthropic: {
+                badge: '💳 Paid — Best Quality',
+                color: '#d97706',
+                bg: '#fffbeb',
+                border: '#fde68a',
+                steps: [
+                  {n:'1', t:'Open Anthropic Console', d:'Go to console.anthropic.com and create an account. Add a credit card — usage is pay-per-use (very cheap, ~₹0.10 per tax analysis).', url:'https://console.anthropic.com/keys', cta:'Open console.anthropic.com →'},
+                  {n:'2', t:'Create API Key', d:'Go to "API Keys" → "Create Key" → copy the key starting with sk-ant-...'},
+                  {n:'3', t:'Paste it below', d:'Paste the key below and click "Save and Activate AI". Claude Haiku is fast and very affordable.'},
+                ]
+              },
+              openai: {
+                badge: '💳 Paid — ~₹0.08 per use',
+                color: '#374151',
+                bg: '#f9fafb',
+                border: '#e5e7eb',
+                steps: [
+                  {n:'1', t:'Open OpenAI Platform', d:'Go to platform.openai.com — sign up and add a credit card. Minimum top-up $5 (~₹420) lasts months.', url:'https://platform.openai.com/api-keys', cta:'Open platform.openai.com →'},
+                  {n:'2', t:'Create API Key', d:'Go to "API Keys" in the sidebar → "Create new secret key" → copy the key starting with sk-...'},
+                  {n:'3', t:'Paste it below', d:'Paste the key below and click "Save and Activate AI".'},
+                ]
+              }
+            };
+            const g = guides[provider];
+            return (
+              <div style={{background:g.bg,border:`1px solid ${g.border}`,borderRadius:10,padding:'12px 14px',marginBottom:14}}>
+                <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:10}}>
+                  <div style={{fontSize:12,fontWeight:800,color:g.color}}>📋 How to get your API key — 3 steps</div>
+                  <span style={{fontSize:10,fontWeight:700,background:g.color,color:'#fff',padding:'2px 8px',borderRadius:20}}>{g.badge}</span>
+                </div>
+                <div style={{display:'flex',flexDirection:'column',gap:8}}>
+                  {g.steps.map(st => (
+                    <div key={st.n} style={{display:'flex',gap:10,alignItems:'flex-start'}}>
+                      <div style={{width:22,height:22,borderRadius:'50%',background:g.color,color:'#fff',fontSize:11,fontWeight:800,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}>{st.n}</div>
+                      <div>
+                        <div style={{fontSize:12,fontWeight:700,color:'var(--ink)',marginBottom:1}}>{st.t}</div>
+                        <div style={{fontSize:11.5,color:'var(--ink3)',lineHeight:1.5}}>{st.d}</div>
+                        {st.url && <a href={st.url} target="_blank" rel="noopener" style={{fontSize:11,color:g.color,fontWeight:700,textDecoration:'none',display:'inline-block',marginTop:3}}>{st.cta}</a>}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
+
+          {/* API Key input */}
           <div className="fg" style={{marginBottom:8}}>
-            <label style={{display:'flex',justifyContent:'space-between'}}>
-              <span>API Key <span style={{fontSize:10,fontWeight:500,textTransform:'none',letterSpacing:0,color:'var(--ink4)'}}>— stored in browser session only, cleared on tab close</span></span>
-              <a href={prov.docsUrl} target="_blank" rel="noopener" style={{fontSize:11,color:'var(--blue)',fontWeight:700,textDecoration:'none'}}>Get Free Key →</a>
+            <label style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+              <span>Paste API Key Here <span style={{fontSize:10,fontWeight:500,textTransform:'none',letterSpacing:0,color:'var(--ink4)'}}>· stored in browser session only</span></span>
+              <a href={prov.docsUrl} target="_blank" rel="noopener" style={{fontSize:11,color:'var(--blue)',fontWeight:700,textDecoration:'none'}}>Get Key →</a>
             </label>
             <div style={{position:'relative'}}>
               <input type={showKey?'text':'password'} value={apiKey} onChange={e => setApiKey(e.target.value)}
@@ -681,13 +752,6 @@ const AISetupModal = ({onDone, onClose}) => {
               borderLeft:'3px solid '+(testResult.startsWith('ok:')?'var(--green)':'var(--red)'),
               color:testResult.startsWith('ok:')?'#065f46':'#991b1b'}}>
               {testResult.startsWith('ok:') ? '✅ ' : '❌ '}{testResult.replace(/^(ok|error):/,'')}
-            </div>
-          )}
-
-          {/* Free tier note */}
-          {prov.free && (
-            <div style={{padding:'9px 13px',background:'var(--green-lt)',borderRadius:8,fontSize:12,color:'#065f46',marginBottom:4,border:'1px solid var(--green-md)'}}>
-              <strong>Free tier available!</strong> {provider==='groq' ? 'Groq offers generous free API access with no credit card required. Sign up at console.groq.com' : 'Gemini Flash is free with a Google account. Get key at aistudio.google.com'}
             </div>
           )}
         </div>
